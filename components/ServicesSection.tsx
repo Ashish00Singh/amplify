@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import gsap from "gsap";
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const services = [
   { id: 1, align: 'right', title: 'Define the System', desc: 'Narratives, messaging, launch thinking, campaign direction, and brand architecture.' },
@@ -34,8 +36,7 @@ export default function ServicesSection() {
     let st: { kill: () => void } | undefined
 
     const init = async () => {
-      const { gsap }          = await import('gsap')
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
+      
       gsap.registerPlugin(ScrollTrigger)
 
       const section   = sectionRef.current
