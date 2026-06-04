@@ -231,7 +231,7 @@ export default function BentoGallery() {
           },
         });
 
-        sorted.forEach((el, i) => {
+        sorted.forEach((el:any, i) => {
           tl.to(el, {
             opacity: 1, scale: 1, x: 0, y: 0,
             filter: "blur(0px)", duration: 0.4, ease: "power2.out",
