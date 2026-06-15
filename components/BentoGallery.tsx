@@ -56,7 +56,7 @@ const cells: Cell[] = [
     label: "04 — Texture", title: "Loop",
     span: { col: "1 / 2", row: "2 / 4" },
     videoSrc: "/videos/AmplifyBanner.mp4",
-    poster: "/images/texture-poster.jpg",
+    poster: "/images/2.jpg",
   },
   {
     id: "c5", type: "image",
@@ -110,7 +110,7 @@ function VideoCell({ src, poster }: { src: string; poster?: string }) {
   const handleMouseEnter = () => videoRef.current?.play();
   const handleMouseLeave = () => {
     if (videoRef.current) {
-      videoRef.current.pause();
+      videoRef.current.play();
       videoRef.current.currentTime = 0;
     }
   };
@@ -124,7 +124,7 @@ function VideoCell({ src, poster }: { src: string; poster?: string }) {
       <video
         ref={videoRef}
         src={src}
-        poster={poster}
+        // poster={poster}
         muted
         loop
         playsInline
@@ -294,12 +294,9 @@ export default function BentoGallery() {
         display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center", gap: 12,
       }}>
-        <h1 style={{
-          fontFamily: "Georgia, serif",
-          fontSize: "clamp(2.5rem,6vw,5rem)",
-          fontWeight: 400, letterSpacing: "-0.03em",
-          color: "#f0ece4", margin: 0,
-        }}>
+        <h1
+        className=" text-white text-6xl font-bold whitespace-nowrap mb-4"
+        >
           Project Gallery
         </h1>
         {/* <p style={{

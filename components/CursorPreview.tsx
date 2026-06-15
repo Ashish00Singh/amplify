@@ -5,107 +5,132 @@ import gsap from "gsap";
 import Image from "next/image";
 
 const items = [
-    {
-        title: "Creative",
-        image: "/images/1.jpg",
-    },
-    {
-        title: "Luxury",
-        image: "/images/2.jpg",
-    },
-    {
-        title: "Modern",
-        image: "/images/3.jpeg",
-    },
-    {
-        title: "Motion",
-        image: "/images/4.jpg",
-    },
+  {
+    title: "Creative",
+    subheading: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas",
+    image: "/images/1.jpg",
+  },
+  {
+    title: "Luxury",
+    subheading: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas",  
+    image: "/images/2.jpg",
+  },
+  {
+    title: "Modern",
+    subheading: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas",
+    image: "/images/3.jpeg",
+  },
+  {
+    title: "Motion",
+    subheading: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas",
+    image: "/images/4.jpg",
+  },
 ];
 
-export default function ImagePreviewSection() {
-    const previewRef =
-        useRef<HTMLDivElement>(null);
+export default function CursorPreview() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
 
-    const sectionRef =
-        useRef<HTMLElement>(null);
+  const [activeImage, setActiveImage] = useState(items[0].image);
 
-    const [activeImage, setActiveImage] =
-        useState(items[0].image);
+  useEffect(() => {
+    const section = sectionRef.current;
+    const preview = previewRef.current;
 
-    const [show, setShow] = useState(false);
+    if (!section || !preview) return;
 
-    useEffect(() => {
-        const section = sectionRef.current;
+    const xTo = gsap.quickTo(preview, "x", {
+      duration: 0.4,
+      ease: "power3.out",
+    });
 
-        if (!section) return;
+    const yTo = gsap.quickTo(preview, "y", {
+      duration: 0.4,
+      ease: "power3.out",
+    });
 
-        const moveCursor = (e: MouseEvent) => {
-            if (!previewRef.current) return;
+    const moveCursor = (e: MouseEvent) => {
+      const rect = section.getBoundingClientRect();
 
-            const rect =
-                section.getBoundingClientRect();
+      xTo(e.clientX - rect.left - 60); // 240 / 2
+      yTo(e.clientY - rect.top - 80); // 320 / 2
+    };
 
-            gsap.to(previewRef.current, {
-                x: e.clientX - rect.left + 40,
-                y: e.clientY - rect.top - 150,
-                duration: 0.3,
-                ease: "power3.out",
-            });
-        };
+    section.addEventListener("mousemove", moveCursor);
 
-        section.addEventListener(
-            "mousemove",
-            moveCursor
-        );
+    return () => {
+      section.removeEventListener(
+        "mousemove",
+        moveCursor
+      );
+    };
+  }, []);
 
-        return () => {
-            section.removeEventListener(
-                "mousemove",
-                moveCursor
-            );
-        };
-    }, []);
+  const showPreview = (image: string) => {
+    setActiveImage(image);
 
-    return (
-        <section
-            ref={sectionRef}
-            className="relative flex min-h-screen items-center justify-center overflow-hidden border-y border-white/10"
-        >
-            {/* Content */}
-            <div className="space-y-6 text-center">
-                {items.map((item, index) => (
-                    <h1
-                        key={index}
-                        onMouseEnter={() => {
-                            setActiveImage(item.image);
-                            setShow(true);
-                        }}
-                        onMouseLeave={() =>
-                            setShow(false)
-                        }
-                        className="cursor-pointer text-7xl font-bold uppercase tracking-[10px]"
-                    >
-                        {item.title}
-                    </h1>
-                ))}
-            </div>
-            {/* Preview */}
-            {show && (
-                <div
-                    ref={previewRef}
-                    className="pointer-events-none absolute left-0 top-0 z-50 h-[320px] w-[240px] overflow-hidden rounded-3xl"
-                >
-                    <Image
-                        src={activeImage}
-                        alt=""
-                        fill
-                        className="object-cover"
-                    />
-                </div>
-            )}
+    gsap.to(previewRef.current, {
+      opacity: 1,
+      scale: 1,
+      duration: 0.3,
+      ease: "power3.out",
+    });
+  };
 
+  const hidePreview = () => {
+    gsap.to(previewRef.current, {
+      opacity: 0,
+      scale: 0.8,
+      duration: 0.3,
+      ease: "power3.out",
+    });
+  };
 
-        </section>
-    );
+  return (
+    <section
+      ref={sectionRef}
+      className="relative flex min-h-screen items-center gap-20 bg-zinc-900 px-8 py-8 md-px-42 lg-px-60 "
+    >
+      {/* Text */}
+      <div className=" min-w-[100%]">
+        {items.map((item, index) => (
+         <div
+         key={index}
+            onMouseEnter={() =>
+              showPreview(item.image)
+            }
+            onMouseLeave={hidePreview}
+         >
+           <h3
+            
+            className="cursor-pointer font-bold uppercase tracking-[1px] text-white"
+          >
+            {item.title}
+          </h3>
+          <p>
+            {item.subheading}
+          </p>
+          <hr className="my-8 border-gray-700" />
+          </div>
+        ))}
+      </div>
+
+      {/* Image Preview */}
+      <div
+        ref={previewRef}
+        className="pointer-events-none absolute left-0 top-0 z-50 h-[300px] w-[220px] overflow-hidden rounded-3xl opacity-0"
+        style={{
+          transform: "translate(-50%, -50%) scale(0.8)",
+        }}
+      >
+        <Image
+          src={activeImage}
+          alt={activeImage}
+          fill
+          priority
+          className="object-cover"
+        />
+      </div>
+    </section>
+  );
 }

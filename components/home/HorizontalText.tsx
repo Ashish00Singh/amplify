@@ -1,15 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import SplitType from "split-type";
 
-export default function HorizontalText() {
-  useEffect(() => {
-    const split = new SplitType(".marquee-text", {
-      types: "chars",
-    });
+const LABEL = " Creative Intelligence . Engineered for Growth   ";
+const INITIAL_COUNT = 4; // enough to fill screen + 1 offscreen
 
+export default function HorizontalText() {
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // --- Scatter-in ---
+    const split = new SplitType(".marquee-text", { types: "chars" });
     gsap.from(split.chars, {
       y: () => gsap.utils.random(-200, 200),
       rotation: () => gsap.utils.random(-25, 25),
@@ -19,26 +22,57 @@ export default function HorizontalText() {
       duration: 1.2,
     });
 
-    // gsap.to(".track", {
-    //   xPercent: -50,
-    //   duration: 18,
-    //   repeat: -1,
-    //   ease: "linear",
-    // });
+    // --- Recycling marquee ---
+    const track = trackRef.current;
+    if (!track) return;
 
-    return () => split.revert();
+    let animFrameId: number;
+    const speed = .8; // px per frame — increase for faster
+
+    function tick() {
+      const items = Array.from(track!.children) as HTMLElement[];
+      if (!items.length) return;
+
+      // Move track left by speed px
+      const currentX = gsap.getProperty(track, "x") as number;
+      const nextX = currentX - speed;
+      gsap.set(track, { x: nextX });
+
+      // Check if first child has scrolled fully off-screen to the left
+      const first = items[0];
+      const firstRight = first.getBoundingClientRect().right;
+
+      if (firstRight < 0) {
+        // Remove from front, append to end
+        track!.removeChild(first);
+        track!.appendChild(first);
+
+        // Offset x by the removed element's width so position doesn't jump
+        gsap.set(track, { x: nextX + first.offsetWidth });
+      }
+
+      animFrameId = requestAnimationFrame(tick);
+    }
+
+    animFrameId = requestAnimationFrame(tick);
+
+    return () => {
+      split.revert();
+      cancelAnimationFrame(animFrameId);
+    };
   }, []);
 
   return (
-    <div className="overflow-hidden py-10">
-      <div className="track ">
-        <h1 className="marquee-text tracking-[8px] text-white text-[14px] text-center font-thin whitespace-nowrap mt-10">
-          | Creative Intelligence . Engineered for Growth |
-        </h1>
-
-        {/* <h1 className="marquee-text text-white text-[50px] font-bold whitespace-nowrap mr-20">
-          GSAP HORIZONTAL —
-        </h1> */}
+    <div className="overflow-hidden">
+      <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
+        {Array.from({ length: INITIAL_COUNT }).map((_, i) => (
+          <h1
+            key={i}
+            className="marquee-text tracking-[8px] text-black text-[14px] font-thin whitespace-nowrap mt-10 px-8"
+          >
+             {LABEL}
+          </h1>
+        ))}
       </div>
     </div>
   );

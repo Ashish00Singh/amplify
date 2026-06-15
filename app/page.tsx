@@ -86,21 +86,34 @@ export default function Home() {
   return (
     <>
       {/* <Header /> */}
-      <div id="smooth-wrapper">
+      <div id="smooth-wrapper" className="bg-white">
         <div id="smooth-content">
-          <div className="h-screen bg-blue-500 " >
-            <HorizontalText />
-            <div className=" flex flex-col items-center justify-center text-white">
-              <h1 className="text-6xl">GSAP Section 1</h1>
+          <div className="overflow-hidden h-screen bg-white mt-10  " >
+            <div className="flex items-center justify-center mt-10" >
+              <div className=" w-[60%] my-14 flex items-center justify-center">
+                <span className="mt-10 tracking-[8px] text-black text-[18px] font-thin whitespace-nowrap px-4">|</span>
+                <HorizontalText />
+                <span className="mt-10 tracking-[8px] text-black text-[18px] font-thin whitespace-nowrap px-4">|</span>
+              </div>
+            </div>
+
+            <div className="w-[100%] h-[100%]">
+
+              {/* <h1 className="text-6xl">GSAP Section 1</h1> */}
+
+              <video className=" object-cover h-[100vh] w-[100%] object-contain" src="/videos/AmplifyBanner.mp4" autoPlay loop muted />
+
+
+
             </div>
           </div>
           <BrandSystemSection />
           <div className="relative">
-            <CursorPreview />
+            <CursorPreview /> {/* // Cursor Preview Section -- responsive and has image preview on hover */}
           </div>
           {/* Section 1 */}
           <section className="h-screen flex items-center justify-center bg-black text-white">
-            <h1 className="text-6xl">GSAP Section 1</h1>
+            <h1 className="text-6xl">GSAP Section 01</h1>
           </section>
 
           <Methodology />
