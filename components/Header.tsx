@@ -67,7 +67,7 @@ export default function Header() {
   return (
     <>
       {/* Header */}
-      <header className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-8 py-3 text-black/90 backdrop-blur-lg">
+      <header className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-8 py-3 text-black/90 ">
         <Image src="/images/AmplifyNewLogo.svg" alt="Logo" width={120} height={40} />
         {/* <h1 className="text-2xl font-bold">LOGO</h1> */}
 
