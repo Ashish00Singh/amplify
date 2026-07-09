@@ -6,7 +6,7 @@ export default function BrandSystemSection() {
 
 
   return (
-    <section className="w-full  bg-[#f7f7f7] px-[8%] py-20 flex flex-col justify-center gap-20 text-[#1e1e1e]">
+    <section className="w-full  bg-[white] px-[8%] py-20 flex flex-col justify-center gap-20 text-[#1e1e1e]">
 
       {/* Top */}
       <div className="text-center">
@@ -31,7 +31,7 @@ export default function BrandSystemSection() {
               muted
               loop
               playsInline
-              className="w-full h-full object-cover border-[1px] border-[#ccc] scale-110"
+              className="w-full h-full object-cover border-[0]  scale-110"
               src="/videos/AmplifyBanner.mp4"
             >
               {/* <source

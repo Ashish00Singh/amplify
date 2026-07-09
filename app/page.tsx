@@ -102,9 +102,6 @@ export default function Home() {
               {/* <h1 className="text-6xl">GSAP Section 1</h1> */}
 
               <video className=" object-cover h-[100vh] w-[100%] object-contain" src="/videos/AmplifyBanner.mp4" autoPlay loop muted />
-
-
-
             </div>
           </div>
           <BrandSystemSection />
@@ -158,7 +155,7 @@ export default function Home() {
             <h1 className="text-6xl">Last Section</h1>
           </section>
 
-          <FooterSection />
+          {/* <FooterSection /> */}
         </div>
       </div>
 
