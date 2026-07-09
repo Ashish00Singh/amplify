@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import BentoFlipGallery from "@/components/BentoFlipGallery";
 
 

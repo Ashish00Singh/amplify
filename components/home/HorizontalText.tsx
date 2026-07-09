@@ -10,6 +10,7 @@ const INITIAL_COUNT = 4; // enough to fill screen + 1 offscreen
 export default function HorizontalText() {
   const trackRef = useRef<HTMLDivElement>(null);
 
+  
   useEffect(() => {
     // --- Scatter-in ---
     const split = new SplitType(".marquee-text", { types: "chars" });
