@@ -126,7 +126,7 @@ export default function ServicesSection() {
     <section
       ref={sectionRef}
       className="relative min-h-screen overflow-x-hidden py-16 pb-24 md:py-24 md:pb-40 font-sans text-white"
-      style={{ background: 'linear-gradient(170deg,#1a5fa8 0%,#1a9fbf 50%,#1ecdb8 100%)' }}
+      // style={{ background: 'linear-gradient(170deg,#1a5fa8 0%,#1a9fbf 50%,#1ecdb8 100%)' }}
     >
       {/* Dashed S-curve SVG — stays absolute/full so JS coordinates map 1-to-1 */}
       <svg
@@ -191,3 +191,5 @@ export default function ServicesSection() {
     </section>
   )
 }
+
+

@@ -6,25 +6,30 @@ import Image from "next/image";
 
 const items = [
   {
-    title: "Creative",
-    subheading: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas",
+    title: "BRAND STRATEGY + POSITIONING",
+    subheading: "Narratives, messaging, launch thinking, campaign direction, and brand architecture",
     image: "/images/1.jpg",
   },
   {
-    title: "Luxury",
-    subheading: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas",  
+    title: "SOCIAL MEDIA MANAGEMENT",
+    subheading: "Instagram and Facebook-first content systems built for consistency, culture, and growth",
+    image: "/images/1.jpg",
+  },
+  {
+    title: "CREATIVE CAMPAIGNS",
+    subheading: "Concepts, scripts, shoots, reels, motion assets, and platform-ready campaign rollouts.",  
     image: "/images/2.jpg",
   },
   {
-    title: "Modern",
-    subheading: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas",
+    title: "PERFORMANCE MARKETING",
+    subheading: "Ad creatives, Meta campaigns, funnel thinking, testing, optimisation, and reporting",
     image: "/images/3.jpeg",
   },
   {
-    title: "Motion",
-    subheading: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas",
+    title: "CONTENT PRODUCTION",
+    subheading: "Photography, reels, video edits, motion graphics, branded content, and always-on assets.",
     image: "/images/4.jpg",
-  },
+  }
 ];
 
 export default function CursorPreview() {
@@ -89,7 +94,7 @@ export default function CursorPreview() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex min-h-screen items-center gap-20 bg-zinc-900 px-8 py-8 md-px-42 lg-px-60 "
+      className="relative flex min-h-screen items-center gap-20  px-8 py-8 md-px-42 lg-px-60 "
     >
       {/* Text */}
       <div className=" min-w-[100%]">
@@ -110,7 +115,7 @@ export default function CursorPreview() {
           <p>
             {item.subheading}
           </p>
-          <hr className="my-8 border-gray-700" />
+          <hr className="my-8 border-white" />
           </div>
         ))}
       </div>

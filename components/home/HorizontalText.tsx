@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import SplitType from "split-type";
 
 const LABEL = " Creative Intelligence . Engineered for Growth   ";
 const INITIAL_COUNT = 4; // enough to fill screen + 1 offscreen
@@ -12,17 +11,7 @@ export default function HorizontalText() {
 
   
   useEffect(() => {
-    // --- Scatter-in ---
-    const split = new SplitType(".marquee-text", { types: "chars" });
-    gsap.from(split.chars, {
-      y: () => gsap.utils.random(-200, 200),
-      rotation: () => gsap.utils.random(-25, 25),
-      opacity: 0,
-      stagger: 0.02,
-      ease: "back.out(1.7)",
-      duration: 1.2,
-    });
-
+   
     // --- Recycling marquee ---
     const track = trackRef.current;
     if (!track) return;
@@ -57,10 +46,7 @@ export default function HorizontalText() {
 
     animFrameId = requestAnimationFrame(tick);
 
-    return () => {
-      split.revert();
-      cancelAnimationFrame(animFrameId);
-    };
+    
   }, []);
 
   return (

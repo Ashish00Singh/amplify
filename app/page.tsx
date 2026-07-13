@@ -12,6 +12,7 @@ import BrandSystemSection from "@/components/home/BrandSystemSection";
 import CursorPreview from "@/components/CursorPreview";
 import Methodology from "@/components/ServicesSection";
 import BentoGallery from "@/components/BentoGallery";
+import SliderSection from "@/components/SliderSection";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
@@ -86,9 +87,9 @@ export default function Home() {
   return (
     <>
       {/* <Header /> */}
-      <div id="smooth-wrapper" className="bg-white">
+      <div id="smooth-wrapper" style={{ background: 'linear-gradient(170deg,#1a5fa8 0%,#1a9fbf 50%,#1ecdb8 100%)' }}>
         <div id="smooth-content">
-          <div className="overflow-hidden h-screen bg-white mt-10  " >
+          <div className="overflow-hidden h-screen mt-10  " >
             <div className="flex items-center justify-center mt-10" >
               <div className=" w-[60%] my-14 flex items-center justify-center">
                 <span className="mt-10 tracking-[8px] text-black text-[18px] font-thin whitespace-nowrap px-4">|</span>
@@ -104,25 +105,28 @@ export default function Home() {
               <video className=" object-cover h-[100vh] w-[100%] object-contain" src="/videos/AmplifyBanner.mp4" autoPlay loop muted />
             </div>
           </div>
+
+
           <BrandSystemSection />
-          <div className="relative">
+
+
+          <div className="relative" >
             <CursorPreview /> {/* // Cursor Preview Section -- responsive and has image preview on hover */}
           </div>
           {/* Section 1 */}
-          <section className="h-screen flex items-center justify-center bg-black text-white">
-            <h1 className="text-6xl">GSAP Section 01</h1>
-          </section>
 
-          <Methodology />
+          <section>
+            <Methodology />
+          </section>
 
           {/* Horizontal Section */}
           <div
             ref={sectionRef}
-            className="h-screen overflow-hidden bg-zinc-900 "
+            className="h-screen overflow-hidden "
           >
             <div className=" pt-8 flex items-center justify-center">
               <h1 className="text-6xl text-white">
-                Ashish
+                CASE STUDIES
               </h1>
             </div>
             <div
@@ -149,10 +153,13 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <BentoGallery />
+          {/* <BentoGallery /> */}
+
+<SliderSection/>
+
           {/* Last Section */}
-          <section className="h-screen flex items-center justify-center bg-black text-white">
-            <h1 className="text-6xl">Last Section</h1>
+          <section className="h-screen flex items-center justify-center bg-black text-white mt-20">
+            <video className="w-[100%]  object-contain" src="/videos/amplifyLastS.mp4" autoPlay loop muted />
           </section>
 
           {/* <FooterSection /> */}

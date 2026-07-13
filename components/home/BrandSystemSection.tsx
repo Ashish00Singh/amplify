@@ -23,7 +23,7 @@ export default function BrandSystemSection() {
       <div className="flex items-center justify-center gap-24 flex-wrap">
 
         {/* Diagram */}
-        <div className="relative w-[350px] h-[320px]">
+        <div className="relative w-[450px] h-[320px]">
 
           <div>
             <video
@@ -76,7 +76,7 @@ export default function BrandSystemSection() {
       </div>
 
       {/* Bottom */}
-      <div className="text-center">
+      <div className="text-center relative z-10">
         <h3 className="text-[14px] tracking-[4px] mb-5">
           BRAND SYSTEMS
         </h3>
