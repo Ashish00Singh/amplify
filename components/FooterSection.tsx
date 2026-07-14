@@ -31,7 +31,7 @@ export default function FooterSection() {
   return (
     <footer
      
-      className="text-white mt-15"
+      className="text-white mt-15 px-10"
     >
       <div className="">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-[1.4fr_1fr_1fr_1fr_1fr]">

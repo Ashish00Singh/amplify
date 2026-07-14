@@ -105,7 +105,6 @@ export default function Header() {
           aria-label="Toggle menu"
           aria-expanded={isOpen}
           className="relative z-50 border-1 border-white rounded-[5px] flex h-12 w-14 flex-col items-center mix-blend-difference justify-center gap-[8px]"
-
         >
           <span
             ref={line1Ref}

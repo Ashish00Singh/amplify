@@ -8,27 +8,27 @@ const items = [
   {
     title: "BRAND STRATEGY + POSITIONING",
     subheading: "Narratives, messaging, launch thinking, campaign direction, and brand architecture",
-    image: "/images/1.jpg",
+    image: "/images/Amplify-WebsiteBrand-positioning.png",
   },
   {
     title: "SOCIAL MEDIA MANAGEMENT",
     subheading: "Instagram and Facebook-first content systems built for consistency, culture, and growth",
-    image: "/images/1.jpg",
+    image: "/images/Amplify-WebsiteSocial-Media-Management.png",
   },
   {
     title: "CREATIVE CAMPAIGNS",
     subheading: "Concepts, scripts, shoots, reels, motion assets, and platform-ready campaign rollouts.",  
-    image: "/images/2.jpg",
+    image: "/images/Amplify-WebsiteContent-Production_2.png",
   },
   {
     title: "PERFORMANCE MARKETING",
     subheading: "Ad creatives, Meta campaigns, funnel thinking, testing, optimisation, and reporting",
-    image: "/images/3.jpeg",
+    image: "/images/Amplify-Websiteperfomance.png",
   },
   {
     title: "CONTENT PRODUCTION",
     subheading: "Photography, reels, video edits, motion graphics, branded content, and always-on assets.",
-    image: "/images/4.jpg",
+    image: "/images/Amplify-WebsiteContent-Production_1.png",
   }
 ];
 
