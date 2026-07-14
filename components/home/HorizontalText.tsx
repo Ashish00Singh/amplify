@@ -3,15 +3,15 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
-const LABEL = " Creative Intelligence . Engineered for Growth   ";
+const LABEL = " Creative Intelligence . Engineered for Growth.   ";
 const INITIAL_COUNT = 4; // enough to fill screen + 1 offscreen
 
 export default function HorizontalText() {
   const trackRef = useRef<HTMLDivElement>(null);
 
-  
+
   useEffect(() => {
-   
+
     // --- Recycling marquee ---
     const track = trackRef.current;
     if (!track) return;
@@ -46,18 +46,16 @@ export default function HorizontalText() {
 
     animFrameId = requestAnimationFrame(tick);
 
-    
   }, []);
 
   return (
-    <div className="overflow-hidden">
-      <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
+    <div className="overflow-hidden w-full overflow-x-hidden">
+      <div ref={trackRef} className="flex text-black whitespace-nowrap will-change-transform">
         {Array.from({ length: INITIAL_COUNT }).map((_, i) => (
           <h1
             key={i}
-            className="marquee-text tracking-[8px] text-black text-[14px] font-thin whitespace-nowrap mt-10 px-8"
-          >
-             {LABEL}
+            className="marquee-text tracking-[8px] text-black text-[14px] my-5 font-thin whitespace-nowrap  px-8">
+            {LABEL}
           </h1>
         ))}
       </div>

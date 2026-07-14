@@ -87,14 +87,17 @@ export default function Home() {
   return (
     <>
       {/* <Header /> */}
-      <div id="smooth-wrapper" style={{ background: 'linear-gradient(170deg,#1a5fa8 0%,#1a9fbf 50%,#1ecdb8 100%)' }}>
+      <div id="smooth-wrapper"
+      
+       style={{ background: 'linear-gradient(170deg,#1a5fa8 0%,#1a9fbf 50%,#1ecdb8 100%)' }}>
         <div id="smooth-content">
-          <div className="overflow-hidden h-screen mt-10  " >
-            <div className="flex items-center justify-center mt-10" >
-              <div className=" w-[60%] my-14 flex items-center justify-center">
-                <span className="mt-10 tracking-[8px] text-black text-[18px] font-thin whitespace-nowrap px-4">|</span>
+          <div className="overflow-hidden h-screen " >
+
+            <div className="flex items-center justify-center   z-10" >
+              <div className=" w-[70%] rounded-lg backdrop-blur-[15px]  items-end-safe absolute top-0 my-14 flex items-center justify-center">
+                <span className=" tracking-[8px] text-black my-5 text-[18px] font-thin whitespace-nowrap px-4">|</span>
                 <HorizontalText />
-                <span className="mt-10 tracking-[8px] text-black text-[18px] font-thin whitespace-nowrap px-4">|</span>
+                <span className=" tracking-[8px] text-black my-5 text-[18px] font-thin whitespace-nowrap px-4">|</span>
               </div>
             </div>
 
@@ -102,7 +105,7 @@ export default function Home() {
 
               {/* <h1 className="text-6xl">GSAP Section 1</h1> */}
 
-              <video className=" object-cover h-[100vh] w-[100%] object-contain" src="/videos/AmplifyBanner.mp4" autoPlay loop muted />
+              <video className=" object-cover h-[100vh] w-[100%] object-contain" src="/videos/AMP-Banner-LP-compressed.mp4" autoPlay loop muted />
             </div>
           </div>
 
@@ -124,45 +127,23 @@ export default function Home() {
             ref={sectionRef}
             className="h-screen overflow-hidden "
           >
-            <div className=" pt-8 flex items-center justify-center">
+            <div className=" pt-8 mb-10 flex items-center justify-center">
               <h1 className="text-6xl text-white">
                 CASE STUDIES
               </h1>
             </div>
-            <div
-              ref={cardsRef}
-              className="flex gap-10 h-full items-center px-10 w-max"
-            >
-              {cards.map((card, index) => (
-                <div
-                  key={index}
-                  className="min-w-[350px] h-[500px] rounded-xl  bg-black overflow-hidden"
-                >
-                  <img
-                    src={card.imgUel}
-                    alt={card.title}
-                    className="w-full h-[85%] object-cover"
-                  />
 
-                  <div className="p-4">
-                    <h2 className="text-2xl font-semibold text-white">
-                      {card.title}
-                    </h2>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <SliderSection />
           </div>
           {/* <BentoGallery /> */}
 
-<SliderSection/>
 
           {/* Last Section */}
-          <section className="h-screen flex items-center justify-center bg-black text-white mt-20">
+          <section className="h-screen flex items-center justify-center bg-black text-white mt-20 overflow-hidden">
             <video className="w-[100%]  object-contain" src="/videos/amplifyLastS.mp4" autoPlay loop muted />
           </section>
 
-          {/* <FooterSection /> */}
+          <FooterSection />
         </div>
       </div>
 

@@ -48,31 +48,24 @@ export default function ServicesSection() {
         requestAnimationFrame(() => requestAnimationFrame(() => res()))
       )
 
+      const getCenter = (el: HTMLDivElement | null) => {
+        if (!el) return { x: section.offsetWidth / 3, y: 0 }
+        let top = 0, left = 0
+        let node: HTMLElement | null = el
+        while (node && node !== section) {
+          top  += node.offsetTop
+          left += node.offsetLeft
+          node  = node.offsetParent as HTMLElement | null
+        }
+        return { x: left + el.offsetWidth / 2, y: top + el.offsetHeight / 2 }
+      }
+
       const buildPath = () => {
-        const H = section.scrollHeight
+        const first = getCenter(iconRefs.current[0])
+        const last  = getCenter(iconRefs.current[iconRefs.current.length - 1])
+        const x = section.offsetWidth / 2 // straight vertical line, centered horizontally
 
-        const ptsFixed = iconRefs.current.map(el => {
-          if (!el) return { x: section.offsetWidth / 2, y: 0 }
-          let top = 0, left = 0
-          let node: HTMLElement | null = el
-          while (node && node !== section) {
-            top  += node.offsetTop
-            left += node.offsetLeft
-            node  = node.offsetParent as HTMLElement | null
-          }
-          return { x: left + el.offsetWidth / 2, y: top + el.offsetHeight / 2 }
-        })
-
-        const [p0, p1, p2, p3] = ptsFixed
-        const d = [
-          `M ${p0.x} 0`,
-          `C ${p0.x} ${p0.y * 0.4}, ${p0.x} ${p0.y * 0.8}, ${p0.x} ${p0.y}`,
-          `C ${p0.x} ${(p0.y + p1.y) / 2}, ${p1.x} ${(p0.y + p1.y) / 2}, ${p1.x} ${p1.y}`,
-          `C ${p1.x} ${(p1.y + p2.y) / 2}, ${p2.x} ${(p1.y + p2.y) / 2}, ${p2.x} ${p2.y}`,
-          `C ${p2.x} ${(p2.y + p3.y) / 2}, ${p3.x} ${(p2.y + p3.y) / 2}, ${p3.x} ${p3.y}`,
-          `C ${p3.x} ${(p3.y + H) / 2}, ${p3.x} ${(p3.y + H) / 2}, ${p3.x} ${H}`,
-          `L ${p3.x} ${H}`,
-        ].join(' ')
+        const d = `M ${x} ${first.y} L ${x} ${last.y}`
 
         pathEl.setAttribute('d', d)
         return pathEl.getTotalLength()
@@ -125,10 +118,10 @@ export default function ServicesSection() {
     // Background gradient via inline style — Tailwind can't express arbitrary 170deg gradients
     <section
       ref={sectionRef}
-      className="relative min-h-screen overflow-x-hidden py-16 pb-24 md:py-24 md:pb-40 font-sans text-white"
+      className="relative min-h-screen overflow-x-hidden py-16 pb-4 md:py-24 md:pb-40 font-sans text-white"
       // style={{ background: 'linear-gradient(170deg,#1a5fa8 0%,#1a9fbf 50%,#1ecdb8 100%)' }}
     >
-      {/* Dashed S-curve SVG — stays absolute/full so JS coordinates map 1-to-1 */}
+      {/* Straight vertical line — stays absolute/full so JS coordinates map 1-to-1 */}
       <svg
         className="absolute inset-0 w-full h-full pointer-events-none overflow-visible"
         aria-hidden="true"
@@ -191,5 +184,3 @@ export default function ServicesSection() {
     </section>
   )
 }
-
-

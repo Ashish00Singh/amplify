@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import Link from "next/link";
 import Image from "next/image";
@@ -9,6 +9,12 @@ export default function Header() {
   const menuRef = useRef<HTMLDivElement | null>(null);
   const navRef = useRef<HTMLElement | null>(null);
   const tl = useRef<gsap.core.Timeline | null>(null);
+
+  const line1Ref = useRef<HTMLSpanElement | null>(null);
+  const line2Ref = useRef<HTMLSpanElement | null>(null);
+  const line3Ref = useRef<HTMLSpanElement | null>(null);
+
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (!menuRef.current || !navRef.current) return;
@@ -44,6 +50,22 @@ export default function Header() {
           ease: "power3.out",
         },
         "-=0.5"
+      )
+      // Hamburger -> X, synced with the menu opening
+      .to(
+        line1Ref.current,
+        { rotate: 38, y: 12, duration: 0.4, ease: "power3.inOut" },
+        0
+      )
+      .to(
+        line2Ref.current,
+        { opacity: 0, duration: 0.2, ease: "power3.inOut" },
+        0
+      )
+      .to(
+        line3Ref.current,
+        { rotate: -38, y: -12, duration: 0.4, ease: "power3.inOut" },
+        0
       );
 
     tl.current.reverse();
@@ -54,28 +76,52 @@ export default function Header() {
 
     if (tl.current.reversed()) {
       tl.current.play();
+      setIsOpen(true);
     } else {
       tl.current.reverse();
+      setIsOpen(false);
     }
   };
 
   const closeMenu = () => {
-  if (!tl.current) return;
-  tl.current.reverse();
-};
+    if (!tl.current) return;
+    tl.current.reverse();
+    setIsOpen(false);
+  };
 
   return (
     <>
       {/* Header */}
-      <header className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-8 py-3 text-black/90 ">
-        <Image src="/images/AmplifyNewLogo.svg" alt="Logo" width={120} height={40} />
-        {/* <h1 className="text-2xl font-bold">LOGO</h1> */}
+      <header
+        // className="mx-auto max-w-6xl px-6 py-16"
+        className=" mx-auto fixed top-0 left-0 w-full z-50 flex items-center justify-between px-8 py-3 text-black/90 ">
+        <Link href="/" className="flex items-center gap-2">
+          <Image src="/images/AmplifyNewLogo.svg" alt="Logo" width={120} height={40} />
+        </Link>
 
+        {/* Hamburger */}
         <button
           onClick={toggleMenu}
-          className="uppercase tracking-widest text-sm"
+          aria-label="Toggle menu"
+          aria-expanded={isOpen}
+          className="relative z-50 border-1 border-white rounded-[5px] flex h-12 w-14 flex-col items-center mix-blend-difference justify-center gap-[8px]"
+
         >
-          Menu
+          <span
+            ref={line1Ref}
+            className="block rounded-lg h-[4px] w-12 origin-center "
+            style={{ background: 'linear-gradient(170deg,#1a5fa8 0%,#1a9fbf 50%,#1ecdb8 100%)' }}
+          />
+          <span
+            ref={line2Ref}
+            className="block rounded-lg h-[4px] w-12 origin-center "
+            style={{ background: 'linear-gradient(170deg,#1a5fa8 0%,#1a9fbf 50%,#1ecdb8 100%)' }}
+          />
+          <span
+            ref={line3Ref}
+            className="block rounded-lg h-[4px] w-12 origin-center "
+            style={{ background: 'linear-gradient(170deg,#1a5fa8 0%,#1a9fbf 50%,#1ecdb8 100%)' }}
+          />
         </button>
       </header>
 

@@ -1,76 +1,99 @@
-"use client";
 
-import { useEffect } from "react";
-import gsap from "gsap";
 
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import MorphSVGPlugin from "gsap/MorphSVGPlugin";
-
-gsap.registerPlugin(ScrollTrigger, MorphSVGPlugin);
-
-const down =
-  "M0-0.3C0-0.3,464,156,1139,156S2278-0.3,2278-0.3V683H0V-0.3z";
-
-const center =
-  "M0-0.3C0-0.3,464,0,1139,0s1139-0.3,1139-0.3V683H0V-0.3z";
+const footerLinks = {
+  Services: [
+    { label: "SaaS Development", href: "#" },
+    { label: "AI App Development", href: "#" },
+    { label: "Laravel Development", href: "#" },
+    { label: "Agency Outsourcing", href: "#" },
+  ],
+  "Open Source": [
+    { label: "Initiatives", href: "#" },
+    { label: "Slate UI Kit", href: "#" },
+    { label: "Electrik Starter Kit", href: "#" },
+  ],
+  Company: [
+    { label: "About", href: "#" },
+    { label: "Case Studies", href: "#" },
+    { label: "Careers", href: "#" },
+    { label: "Insights", href: "#" },
+    { label: "Contact", href: "#" },
+  ],
+  Legal: [
+    { label: "Privacy Policy", href: "#" },
+    { label: "Terms & Conditions", href: "#" },
+    { label: "Security", href: "#" },
+    { label: "Subprocessors", href: "#" },
+  ],
+};
 
 export default function FooterSection() {
-  useEffect(() => {
-    ScrollTrigger.create({
-      trigger: ".footer",
-      start: "top bottom",
-
-      onEnter: (self) => {
-        const velocity = self.getVelocity();
-        const variation = 2;
-        console.log(variation)
-
-        gsap.fromTo(
-          "#bouncy-path",
-          {
-            morphSVG: down,
-          },
-          {
-            morphSVG: center,
-            duration: 2,
-            ease: `elastic.out(${1 + variation}, ${1 - variation
-              })`,
-          }
-        );
-      },
-    });
-  }, []);
-
   return (
-    <>
-      {/* Separate SVG */}
+    <footer
+     
+      className="text-white mt-15"
+    >
+      <div className="">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-[1.4fr_1fr_1fr_1fr_1fr]">
+          {/* Brand column */}
+          <div>
+            <h2 className="text-xl font-semibold tracking-tight">
+              Quick Brown Fox
+            </h2>
+            <p className="mt-3 max-w-xs text-sm text-white/80">
+              Enterprise tech delivery for agencies and brands.
+            </p>
 
-      
+            <a
+              href="mailto:hello@quickbrownfox.io"
+              className="mt-5 inline-flex items-center gap-2 text-sm text-white/90 hover:text-white transition-colors"
+            >
+              {/* <Mail size={16} /> */}
+              hello@quickbrownfox.io
+            </a>
 
-      {/* Footer */}
-      <footer
-        className=" h-[500px] flex-row items-center justify-center bg-cover bg-center text-white text-5xl"
-        style={{
-          backgroundImage:
-            "url(https://img.magnific.com/free-photo/closeup-scarlet-macaw-from-side-view-scarlet-macaw-closeup-head_488145-3540.jpg)",
-        }}
-      >
-        <div className="w-full overflow-hidden" >
-        <svg
-          className="w-full block"
-          viewBox="0 0 2278 200"
-          preserveAspectRatio="none"
-        >
-         
-          <path
-            id="bouncy-path"
-            className="footer"
-            d={down}
-          />
-        </svg>
+            <div className="mt-6 flex items-center gap-4">
+              <a
+                href="#"
+                aria-label="LinkedIn"
+                className="text-white/80 hover:text-white transition-colors"
+              >
+                {/* <Linkedin size={18} /> */}
+              </a>
+              <a
+                href="#"
+                aria-label="Instagram"
+                className="text-white/80 hover:text-white transition-colors"
+              >
+                {/* <Instagram size={18} /> */}
+              </a>
+            </div>
+          </div>
+
+          {/* Link columns */}
+          {Object.entries(footerLinks).map(([heading, links]) => (
+            <div key={heading}>
+              <h3 className="text-sm font-semibold text-white">{heading}</h3>
+              <ul className="mt-4 space-y-3">
+                {links.map((link) => (
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      className="text-sm text-white/75 hover:text-white transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-14 border-y border-white/20 pt-6">
+          <p className="text-xs text-center text-white/70">Quick Brown Fox © 2026</p>
+        </div>
       </div>
-        Footer Section
-      </footer>
-    </>
+    </footer>
   );
 }
