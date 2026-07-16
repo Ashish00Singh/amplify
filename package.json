@@ -15,7 +15,8 @@
     "react-dom": "^19.2.6",
     "react-slick": "^0.31.0",
     "slick-carousel": "^1.8.1",
-    "split-type": "^0.3.4"
+    "split-type": "^0.3.4",
+    "three": "^0.185.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -24,6 +25,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/react-slick": "^0.23.13",
+    "@types/three": "^0.185.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
     "tailwindcss": "^4",

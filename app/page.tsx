@@ -6,13 +6,12 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 import FooterSection from "../components/FooterSection";
-import Header from "../components/Header";
 import HorizontalText from "../components/home/HorizontalText";
 import BrandSystemSection from "@/components/home/BrandSystemSection";
 import CursorPreview from "@/components/CursorPreview";
 import Methodology from "@/components/ServicesSection";
-import BentoGallery from "@/components/BentoGallery";
 import SliderSection from "@/components/SliderSection";
+import HeroVideo from "@/components/HeroVideo";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
@@ -88,26 +87,26 @@ export default function Home() {
     <>
       {/* <Header /> */}
       <div id="smooth-wrapper"
-      
-       style={{ background: 'linear-gradient(170deg,#1a5fa8 0%,#1a9fbf 50%,#1ecdb8 100%)' }}>
-        <div id="smooth-content">
-          <div className="overflow-hidden h-screen " >
 
+        style={{ background: 'linear-gradient(170deg,#1a5fa8 0%,#1a9fbf 50%,#1ecdb8 100%)' }}>
+        <div id="smooth-content">
+
+          <div className="w-[100%] h-screen">
+            <div className="overflow-hidden" >
             <div className="flex items-center justify-center   z-10" >
-              <div className=" w-[70%] rounded-lg backdrop-blur-[15px]  items-end-safe absolute top-0 my-14 flex items-center justify-center">
+              <div className=" w-[70%] rounded-lg backdrop-blur-[15px]  items-end-safe absolute z-10 top-0 my-14 flex items-center justify-center">
                 <span className=" tracking-[8px] text-black my-5 text-[18px] font-thin whitespace-nowrap px-4">|</span>
                 <HorizontalText />
                 <span className=" tracking-[8px] text-black my-5 text-[18px] font-thin whitespace-nowrap px-4">|</span>
               </div>
             </div>
-
-            <div className="w-[100%] h-[100%]">
-
-              {/* <h1 className="text-6xl">GSAP Section 1</h1> */}
-
-              <video className=" object-cover h-[100vh] w-[100%] object-contain" src="/videos/AMP-Banner-LP-compressed.mp4" autoPlay loop muted />
-            </div>
           </div>
+             <HeroVideo src="/videos/AMP-Banner-LP-compressed.mp4" />
+          </div>
+
+
+
+          
 
 
           <BrandSystemSection />
@@ -143,7 +142,9 @@ export default function Home() {
             <video className="w-[100%]  object-contain" src="/videos/amplifyLastS.mp4" autoPlay loop muted />
           </section>
 
-          <FooterSection />
+          <footer className="overflow-hidden text-white">
+            <FooterSection />
+          </footer>
         </div>
       </div>
 

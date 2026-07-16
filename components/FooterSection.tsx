@@ -1,3 +1,5 @@
+import Image from "next/image";
+import Link from "next/link";
 
 
 const footerLinks = {
@@ -30,16 +32,16 @@ const footerLinks = {
 export default function FooterSection() {
   return (
     <footer
-     
+
       className="text-white mt-15 px-10"
     >
-      <div className="">
+      <div className="max-w-8xl mx-auto">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-[1.4fr_1fr_1fr_1fr_1fr]">
           {/* Brand column */}
           <div>
-            <h2 className="text-xl font-semibold tracking-tight">
-              Quick Brown Fox
-            </h2>
+            <Link href="/" className="flex items-center gap-2">
+          <Image src="/images/AmplifyNewLogo.svg" alt="Logo" width={120} height={40} />
+        </Link>
             <p className="mt-3 max-w-xs text-sm text-white/80">
               Enterprise tech delivery for agencies and brands.
             </p>
@@ -90,8 +92,8 @@ export default function FooterSection() {
           ))}
         </div>
 
-        <div className="mt-14 border-y border-white/20 pt-6">
-          <p className="text-xs text-center text-white/70">Quick Brown Fox © 2026</p>
+        <div className="my-8 border-y border-white py-4">
+          <p className="text-xs text-center text-white/70">Amplify For  © 2026</p>
         </div>
       </div>
     </footer>
