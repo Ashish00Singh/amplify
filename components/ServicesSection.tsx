@@ -5,10 +5,11 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 const services = [
-  { id: 1, align: 'right', title: 'Define the System',           desc: 'Narratives, messaging, launch thinking, campaign direction, and brand architecture.' },
-  { id: 2, align: 'left',  title: 'Integrate with your Workflow', desc: 'Narratives, messaging, launch thinking, campaign direction, and brand architecture.' },
-  { id: 3, align: 'right', title: 'Build Beyond the Brief',       desc: 'Narratives, messaging, launch thinking, campaign direction, and brand architecture.' },
-  { id: 4, align: 'left',  title: 'Build Beyond the Brief',       desc: 'Narratives, messaging, launch thinking, campaign direction, and brand architecture.' },
+  { id: 1, align: 'right', title: 'OUR METHOD', desc: 'Every Brand Moves Differently' },
+  { id: 2, align: 'left', title: 'UNDERSTAND THE BRAND', desc: 'Narratives, messaging, launch thinking, campaign direction, and brand architecture.'},
+  { id: 3, align: 'right', title: 'DEFINE THE SYSTEM', desc: 'Narratives, messaging, launch thinking, campaign direction, and brand architecture.'},
+  { id: 4, align: 'left', title: 'INTEGRATE WITH YOUR WORKFLOW', desc: 'Narratives, messaging, launch thinking, campaign direction, and brand architecture.'},
+  { id: 5, align: 'right', title: 'BUILD BEYOND THE BRIEF', desc: 'Narratives, messaging, launch thinking, campaign direction, and brand. '},
 ]
 
 function GlobeIcon() {
@@ -27,101 +28,123 @@ function GlobeIcon() {
 }
 
 export default function ServicesSection() {
-  const sectionRef   = useRef<HTMLElement>(null)
-  const pathRef      = useRef<SVGPathElement>(null)
+  const sectionRef = useRef<HTMLElement>(null)
+  const pathRef = useRef<SVGPathElement>(null)
   const travellerRef = useRef<HTMLDivElement>(null)
-  const iconRefs     = useRef<(HTMLDivElement | null)[]>([])
+  const iconRefs = useRef<(HTMLDivElement | null)[]>([])
 
   useEffect(() => {
-    let st: { kill: () => void } | undefined
+    let st: ScrollTrigger | undefined
     let roCleanup: (() => void) | undefined
+    let onLoad: (() => void) | undefined
 
     const init = async () => {
       gsap.registerPlugin(ScrollTrigger)
 
-      const section   = sectionRef.current
-      const pathEl    = pathRef.current
+      const section = sectionRef.current
+      const pathEl = pathRef.current
       const traveller = travellerRef.current
       if (!section || !pathEl || !traveller) return
 
+      // Wait two frames so layout (fonts, flex wrapping, etc.) has settled
       await new Promise<void>(res =>
         requestAnimationFrame(() => requestAnimationFrame(() => res()))
       )
 
       const getCenter = (el: HTMLDivElement | null) => {
-        if (!el) return { x: section.offsetWidth / 3, y: 0 }
+        if (!el) return { x: section.offsetWidth / 2, y: 0 }
         let top = 0, left = 0
         let node: HTMLElement | null = el
         while (node && node !== section) {
-          top  += node.offsetTop
+          top += node.offsetTop
           left += node.offsetLeft
-          node  = node.offsetParent as HTMLElement | null
+          node = node.offsetParent as HTMLElement | null
         }
         return { x: left + el.offsetWidth / 2, y: top + el.offsetHeight / 2 }
       }
 
+      let pathLen = 0
+
       const buildPath = () => {
         const first = getCenter(iconRefs.current[0])
-        const last  = getCenter(iconRefs.current[iconRefs.current.length - 1])
+        const last = getCenter(iconRefs.current[iconRefs.current.length - 1])
         const x = section.offsetWidth / 2 // straight vertical line, centered horizontally
-
         const d = `M ${x} ${first.y} L ${x} ${last.y}`
-
         pathEl.setAttribute('d', d)
-        return pathEl.getTotalLength()
+        pathLen = pathEl.getTotalLength()
       }
 
-      let pathLen = buildPath()
+      const syncPosition = (progress: number) => {
+        if (pathLen <= 0) return
+        const dist = progress * pathLen
+        const pt = pathEl.getPointAtLength(dist)
+        const pt2 = pathEl.getPointAtLength(Math.min(dist + 4, pathLen))
+        const angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * 180 / Math.PI
+        traveller.style.left = `${pt.x}px`
+        traveller.style.top = `${pt.y}px`
+        traveller.style.transform = `translate(-50%,-50%) rotate(${angle}deg)`
+      }
+
+      buildPath()
 
       const createST = () => {
         st?.kill()
         st = ScrollTrigger.create({
           trigger: section,
-          start:   'top bottom',
-          end:     'bottom top',
-          scrub:   0.6,
-          onEnter:     () => { traveller.style.opacity = '1' },
-          onLeave:     () => { traveller.style.opacity = '0' },
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 0.6,
+          invalidateOnRefresh: true,
+          onEnter: () => { traveller.style.opacity = '1' },
+          onLeave: () => { traveller.style.opacity = '0' },
           onEnterBack: () => { traveller.style.opacity = '1' },
           onLeaveBack: () => { traveller.style.opacity = '0' },
-          onUpdate(self) {
-            const dist  = self.progress * pathLen
-            const pt    = pathEl.getPointAtLength(dist)
-            const pt2   = pathEl.getPointAtLength(Math.min(dist + 4, pathLen))
-            const angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * 180 / Math.PI
-            traveller.style.left      = `${pt.x}px`
-            traveller.style.top       = `${pt.y}px`
-            traveller.style.transform = `translate(-50%,-50%) rotate(${angle}deg)`
+          onRefresh: (self) => {
+            traveller.style.opacity = self.isActive ? '1' : '0'
+            syncPosition(self.progress)
           },
+          onUpdate: (self) => syncPosition(self.progress),
         })
+
+        // IMPORTANT: sync immediately after creation. If the section is
+        // already (partially) in view on mount, onEnter/onUpdate may never
+        // fire an "edge" — without this, the traveller stays stuck at
+        // opacity 0 / its default position until the next enter/leave cross.
+        traveller.style.opacity = st.isActive ? '1' : '0'
+        syncPosition(st.progress)
       }
 
       createST()
 
       const ro = new ResizeObserver(() => {
-        pathLen = buildPath()
+        buildPath()
         ScrollTrigger.refresh()
-        createST()
       })
       ro.observe(section)
       roCleanup = () => ro.disconnect()
+
+      // Fonts/images can shift layout after first paint — re-measure once
+      // everything has fully loaded so the path & trigger bounds stay accurate.
+      onLoad = () => {
+        buildPath()
+        ScrollTrigger.refresh()
+      }
+      window.addEventListener('load', onLoad)
     }
 
     init()
     return () => {
       st?.kill()
       roCleanup?.()
+      if (onLoad) window.removeEventListener('load', onLoad)
     }
   }, [])
 
   return (
-    // Background gradient via inline style — Tailwind can't express arbitrary 170deg gradients
     <section
       ref={sectionRef}
       className="relative min-h-screen overflow-x-hidden py-16 pb-4 md:py-24 md:pb-40 font-sans text-white"
-      // style={{ background: 'linear-gradient(170deg,#1a5fa8 0%,#1a9fbf 50%,#1ecdb8 100%)' }}
     >
-      {/* Straight vertical line — stays absolute/full so JS coordinates map 1-to-1 */}
       <svg
         className="absolute inset-0 w-full h-full pointer-events-none overflow-visible"
         aria-hidden="true"
@@ -134,7 +157,6 @@ export default function ServicesSection() {
         />
       </svg>
 
-      {/* Travelling globe */}
       <div
         ref={travellerRef}
         className="absolute top-0 left-0 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20
@@ -144,23 +166,19 @@ export default function ServicesSection() {
         <GlobeIcon />
       </div>
 
-      {/* Service rows */}
       {services.map((s, i) => {
         const isRight = s.align === 'right'
         return (
           <div
             key={s.id}
             className={[
-              // Base: vertical stack on mobile, horizontal on sm+
               'flex flex-col items-center text-center gap-4 px-5 py-10',
               'sm:flex-row sm:text-left sm:gap-8 sm:py-20 sm:max-w-[560px]',
-              // Alternate sides on sm+
               isRight
                 ? 'sm:flex-row-reverse sm:ml-auto sm:mr-[8%]'
                 : 'sm:flex-row     sm:mr-auto sm:ml-[8%]',
             ].join(' ')}
           >
-            {/* Icon */}
             <div
               ref={el => { iconRefs.current[i] = el }}
               className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 shrink-0"
@@ -168,7 +186,6 @@ export default function ServicesSection() {
               <GlobeIcon />
             </div>
 
-            {/* Text */}
             <div>
               <p className="text-[0.65rem] sm:text-[0.7rem] tracking-[0.22em] uppercase
                             font-semibold mb-2 text-white/90">
