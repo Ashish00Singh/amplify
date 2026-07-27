@@ -104,22 +104,20 @@ export default function Header() {
           onClick={toggleMenu}
           aria-label="Toggle menu"
           aria-expanded={isOpen}
-          className="relative cursor-pointer z-50 border-1 border-white rounded-[5px] flex h-12 w-14 flex-col items-center mix-blend-difference justify-center gap-[8px]"
+          style={{ background: 'linear-gradient(170deg,#1a5fa8 0%,#1a9fbf 50%,#1ecdb8 100%)' }}
+          className="relative cursor-pointer z-50 border-1 border-white rounded-full flex h-16 w-16  flex-col items-center mix-blend-difference justify-center gap-[8px]"
         >
           <span
             ref={line1Ref}
-            className="block rounded-lg h-[4px] w-12 origin-center "
-            style={{ background: 'linear-gradient(170deg,#1a5fa8 0%,#1a9fbf 50%,#1ecdb8 100%)' }}
+            className="block rounded-lg h-[4px] w-8 origin-center bg-white "
           />
           <span
             ref={line2Ref}
-            className="block rounded-lg h-[4px] w-12 origin-center "
-            style={{ background: 'linear-gradient(170deg,#1a5fa8 0%,#1a9fbf 50%,#1ecdb8 100%)' }}
+            className="block rounded-lg h-[4px] w-8 origin-center bg-white "
           />
           <span
             ref={line3Ref}
-            className="block rounded-lg h-[4px] w-12 origin-center "
-            style={{ background: 'linear-gradient(170deg,#1a5fa8 0%,#1a9fbf 50%,#1ecdb8 100%)' }}
+            className="block rounded-lg h-[4px] w-8 origin-center bg-white "
           />
         </button>
       </header>

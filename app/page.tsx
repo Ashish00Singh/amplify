@@ -12,6 +12,7 @@ import CursorPreview from "@/components/CursorPreview";
 import Methodology from "@/components/ServicesSection";
 import SliderSection from "@/components/SliderSection";
 import HeroVideo from "@/components/HeroVideo";
+import ServicesOne from "@/components/seervices/servicesone";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
@@ -93,20 +94,20 @@ export default function Home() {
 
           <div className="w-[100%] h-screen">
             <div className="overflow-hidden" >
-            <div className="flex items-center justify-center   z-10" >
-              <div className=" w-[70%] rounded-lg backdrop-blur-[15px]  items-end-safe absolute z-10 top-0 my-14 flex items-center justify-center">
-                <span className=" tracking-[8px] text-black my-5 text-[18px] font-thin whitespace-nowrap px-4">|</span>
-                <HorizontalText />
-                <span className=" tracking-[8px] text-black my-5 text-[18px] font-thin whitespace-nowrap px-4">|</span>
+              <div className="flex items-center justify-center   z-10" >
+                <div className=" w-[70%] rounded-lg backdrop-blur-[15px]  items-end-safe absolute z-10 top-0 my-14 flex items-center justify-center">
+                  <span className=" tracking-[8px] text-black my-5 text-[18px] font-thin whitespace-nowrap px-4">|</span>
+                  <HorizontalText />
+                  <span className=" tracking-[8px] text-black my-5 text-[18px] font-thin whitespace-nowrap px-4">|</span>
+                </div>
               </div>
             </div>
+            <HeroVideo src="/videos/AMP-Banner-LP-compressed.mp4" />
           </div>
-             <HeroVideo src="/videos/AMP-Banner-LP-compressed.mp4" />
-          </div>
 
 
 
-          
+
 
 
           <BrandSystemSection />
@@ -119,6 +120,12 @@ export default function Home() {
 
           <section>
             <Methodology />
+          </section>
+          <h1 className="text-2xl text-black text-center mt-20">
+            OUR SERVICES option
+          </h1>
+          <section>
+            <ServicesOne />
           </section>
 
           {/* Horizontal Section */}

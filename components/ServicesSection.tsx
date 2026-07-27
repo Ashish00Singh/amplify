@@ -1,203 +1,152 @@
-'use client'
+"use client";
 
-import { useEffect, useRef } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const services = [
-  { id: 1, align: 'right', title: 'OUR METHOD', desc: 'Every Brand Moves Differently' },
-  { id: 2, align: 'left', title: 'UNDERSTAND THE BRAND', desc: 'Narratives, messaging, launch thinking, campaign direction, and brand architecture.'},
-  { id: 3, align: 'right', title: 'DEFINE THE SYSTEM', desc: 'Narratives, messaging, launch thinking, campaign direction, and brand architecture.'},
-  { id: 4, align: 'left', title: 'INTEGRATE WITH YOUR WORKFLOW', desc: 'Narratives, messaging, launch thinking, campaign direction, and brand architecture.'},
-  { id: 5, align: 'right', title: 'BUILD BEYOND THE BRIEF', desc: 'Narratives, messaging, launch thinking, campaign direction, and brand. '},
-]
+gsap.registerPlugin(ScrollTrigger);
 
-function GlobeIcon() {
-  return (
-    <svg viewBox="0 0 110 110" width="100%" height="100%" aria-hidden="true">
-      <rect x="14" y="14" width="82" height="82" rx="14"
-        fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.3)" strokeWidth="1.2"
-        transform="rotate(45 55 55)" />
-      <circle cx="55" cy="55" r="22" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="1.1" />
-      <ellipse cx="55" cy="55" rx="10" ry="22" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="1.1" />
-      <line x1="33" y1="55" x2="77" y2="55" stroke="rgba(255,255,255,0.75)" strokeWidth="1.1" />
-      <path d="M37 43 Q55 49 73 43" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="1.1" />
-      <path d="M37 67 Q55 61 73 67" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="1.1" />
-    </svg>
-  )
+type Align = "left" | "right";
+
+interface ServiceItem {
+  id: number;
+  align: Align;
+  title: string;
+  desc: string;
 }
 
-export default function ServicesSection() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const pathRef = useRef<SVGPathElement>(null)
-  const travellerRef = useRef<HTMLDivElement>(null)
-  const iconRefs = useRef<(HTMLDivElement | null)[]>([])
+const services: ServiceItem[] = [
+  { id: 1, align: "right", title: "OUR METHOD", desc: "Every Brand Moves Differently" },
+  { id: 2, align: "left", title: "UNDERSTAND THE BRAND", desc: "Narratives, messaging, launch thinking, campaign direction, and brand architecture." },
+  { id: 3, align: "right", title: "DEFINE THE SYSTEM", desc: "Narratives, messaging, launch thinking, campaign direction, and brand architecture." },
+  { id: 4, align: "left", title: "INTEGRATE WITH YOUR WORKFLOW", desc: "Narratives, messaging, launch thinking, campaign direction, and brand architecture." },
+  { id: 5, align: "right", title: "BUILD BEYOND THE BRIEF", desc: "Narratives, messaging, launch thinking, campaign direction, and brand." },
+];
+
+export default function OurMethod() {
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    let st: ScrollTrigger | undefined
-    let roCleanup: (() => void) | undefined
-    let onLoad: (() => void) | undefined
-
-    const init = async () => {
-      gsap.registerPlugin(ScrollTrigger)
-
-      const section = sectionRef.current
-      const pathEl = pathRef.current
-      const traveller = travellerRef.current
-      if (!section || !pathEl || !traveller) return
-
-      // Wait two frames so layout (fonts, flex wrapping, etc.) has settled
-      await new Promise<void>(res =>
-        requestAnimationFrame(() => requestAnimationFrame(() => res()))
-      )
-
-      const getCenter = (el: HTMLDivElement | null) => {
-        if (!el) return { x: section.offsetWidth / 2, y: 0 }
-        let top = 0, left = 0
-        let node: HTMLElement | null = el
-        while (node && node !== section) {
-          top += node.offsetTop
-          left += node.offsetLeft
-          node = node.offsetParent as HTMLElement | null
-        }
-        return { x: left + el.offsetWidth / 2, y: top + el.offsetHeight / 2 }
-      }
-
-      let pathLen = 0
-
-      const buildPath = () => {
-        const first = getCenter(iconRefs.current[0])
-        const last = getCenter(iconRefs.current[iconRefs.current.length - 1])
-        const x = section.offsetWidth / 2 // straight vertical line, centered horizontally
-        const d = `M ${x} ${first.y} L ${x} ${last.y}`
-        pathEl.setAttribute('d', d)
-        pathLen = pathEl.getTotalLength()
-      }
-
-      const syncPosition = (progress: number) => {
-        if (pathLen <= 0) return
-        const dist = progress * pathLen
-        const pt = pathEl.getPointAtLength(dist)
-        const pt2 = pathEl.getPointAtLength(Math.min(dist + 4, pathLen))
-        const angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * 180 / Math.PI
-        traveller.style.left = `${pt.x}px`
-        traveller.style.top = `${pt.y}px`
-        traveller.style.transform = `translate(-50%,-50%) rotate(${angle}deg)`
-      }
-
-      buildPath()
-
-      const createST = () => {
-        st?.kill()
-        st = ScrollTrigger.create({
-          trigger: section,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 0.6,
-          invalidateOnRefresh: true,
-          onEnter: () => { traveller.style.opacity = '1' },
-          onLeave: () => { traveller.style.opacity = '0' },
-          onEnterBack: () => { traveller.style.opacity = '1' },
-          onLeaveBack: () => { traveller.style.opacity = '0' },
-          onRefresh: (self) => {
-            traveller.style.opacity = self.isActive ? '1' : '0'
-            syncPosition(self.progress)
+    const ctx = gsap.context(() => {
+      // --- Intro block (id 1) ---
+      const intro = gsap.utils.toArray<HTMLElement>(".method-intro")[0];
+      if (intro) {
+        gsap.set(intro, { autoAlpha: 0, y: 40 });
+        gsap.to(intro, {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.9,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: intro,
+            start: "top 82%",
+            end: "top 50%",
+            toggleActions: "play reverse play reverse",
           },
-          onUpdate: (self) => syncPosition(self.progress),
-        })
-
-        // IMPORTANT: sync immediately after creation. If the section is
-        // already (partially) in view on mount, onEnter/onUpdate may never
-        // fire an "edge" — without this, the traveller stays stuck at
-        // opacity 0 / its default position until the next enter/leave cross.
-        traveller.style.opacity = st.isActive ? '1' : '0'
-        syncPosition(st.progress)
+        });
       }
 
-      createST()
+      // --- Steps (ids 2-5), each reveals on its own as it enters the viewport
+      // and reverses when you scroll back up past it. ---
+      const rows = gsap.utils.toArray<HTMLElement>(".method-row");
+      rows.forEach((row) => {
+        const fromLeft = row.dataset.align === "left";
+        gsap.set(row, { autoAlpha: 0, x: fromLeft ? -56 : 56, y: 16 });
+        gsap.to(row, {
+          autoAlpha: 1,
+          x: 0,
+          y: 0,
+          duration: 0.9,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: row,
+            start: "top 85%",
+            end: "top 50%",
+            toggleActions: "play reverse play reverse",
+          },
+        });
 
-      const ro = new ResizeObserver(() => {
-        buildPath()
-        ScrollTrigger.refresh()
-      })
-      ro.observe(section)
-      roCleanup = () => ro.disconnect()
+        // dot marker gets a tiny pop of its own, slightly after the row starts
+        const dot = row.querySelector(".method-dot");
+        if (dot) {
+          gsap.set(dot, { scale: 0 });
+          gsap.to(dot, {
+            scale: 1,
+            duration: 0.4,
+            ease: "back.out(3)",
+            scrollTrigger: {
+              trigger: row,
+              start: "top 80%",
+              end: "top 50%",
+              toggleActions: "play reverse play reverse",
+            },
+          });
+        }
+      });
+    }, sectionRef);
 
-      // Fonts/images can shift layout after first paint — re-measure once
-      // everything has fully loaded so the path & trigger bounds stay accurate.
-      onLoad = () => {
-        buildPath()
-        ScrollTrigger.refresh()
-      }
-      window.addEventListener('load', onLoad)
-    }
+    return () => ctx.revert();
+  }, []);
 
-    init()
-    return () => {
-      st?.kill()
-      roCleanup?.()
-      if (onLoad) window.removeEventListener('load', onLoad)
-    }
-  }, [])
+  const intro = services.find((s) => s.id === 1)!;
+  const steps = services.filter((s) => s.id !== 1);
 
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen overflow-x-hidden py-16 pb-4 md:py-24 md:pb-40 font-sans text-white"
+      className="relative px-6 py-24 sm:px-10 md:py-32 motion-reduce:[&_.method-intro]:opacity-100 motion-reduce:[&_.method-row]:opacity-100 motion-reduce:[&_.method-dot]:scale-100"
     >
-      <svg
-        className="absolute inset-0 w-full h-full pointer-events-none overflow-visible"
-        aria-hidden="true"
-      >
-        <path
-          ref={pathRef}
-          fill="none"
-          strokeWidth="1.5"
-          strokeDasharray="8 10"
-        />
-      </svg>
+      <div className="mx-auto max-w-4xl">
+        {/* Intro */}
+        <div className="method-intro mb-20 ml-auto max-w-2xl text-right md:mb-28">
+          <span className="mb-4 block font-sans text-xs font-semibold uppercase tracking-[0.2em] text-[#c98a2c]">
+            {intro.title}
+          </span>
+          <h2 className="font-serif text-4xl font-medium leading-[1.1] text-[#1b2a22] sm:text-5xl md:text-6xl">
+            {intro.desc}
+          </h2>
+        </div>
 
-      <div
-        ref={travellerRef}
-        className="absolute top-0 left-0 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20
-                   opacity-0 transition-opacity duration-300 pointer-events-none z-10
-                   drop-shadow-[0_0_10px_rgba(255,255,255,0.25)]"
-      >
-        <GlobeIcon />
+        {/* Steps */}
+        <div className="relative">
+          {/* center spine, desktop only */}
+          <div className="pointer-events-none absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-[#1b2a22]/10 md:block" />
+
+          <ol className="relative flex flex-col gap-16 md:gap-10">
+            {steps.map((step, i) => {
+              const isLeft = step.align === "left";
+              return (
+                <li
+                  key={step.id}
+                  data-align={step.align}
+                  className="method-row relative grid grid-cols-1 items-center md:grid-cols-2 md:gap-12"
+                >
+                  {/* center dot marker, desktop only */}
+                  <span className="method-dot pointer-events-none absolute left-1/2 top-1/2 hidden h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#c98a2c] md:block" />
+
+                  <div
+                    className={
+                      isLeft
+                        ? "md:order-1 md:pr-12 md:text-right"
+                        : "md:order-2 md:col-start-2 md:pl-12 md:text-left"
+                    }
+                  >
+                    <span className="mb-3 block font-sans text-sm font-semibold text-[#7c8c6b]">
+                      {String(i + 2).padStart(2, "0")}
+                    </span>
+                    <h3 className="mb-3 font-sans text-lg font-semibold uppercase tracking-wide text-[#1b2a22] sm:text-xl">
+                      {step.title}
+                    </h3>
+                    <p className="max-w-md font-sans text-[15px] leading-relaxed text-[#1b2a22]/70">
+                      {step.desc}
+                    </p>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
       </div>
-
-      {services.map((s, i) => {
-        const isRight = s.align === 'right'
-        return (
-          <div
-            key={s.id}
-            className={[
-              'flex flex-col items-center text-center gap-4 px-5 py-10',
-              'sm:flex-row sm:text-left sm:gap-8 sm:py-20 sm:max-w-[560px]',
-              isRight
-                ? 'sm:flex-row-reverse sm:ml-auto sm:mr-[8%]'
-                : 'sm:flex-row     sm:mr-auto sm:ml-[8%]',
-            ].join(' ')}
-          >
-            <div
-              ref={el => { iconRefs.current[i] = el }}
-              className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 shrink-0"
-            >
-              <GlobeIcon />
-            </div>
-
-            <div>
-              <p className="text-[0.65rem] sm:text-[0.7rem] tracking-[0.22em] uppercase
-                            font-semibold mb-2 text-white/90">
-                {s.title}
-              </p>
-              <p className="text-sm sm:text-[0.95rem] font-light leading-7 text-white/65">
-                {s.desc}
-              </p>
-            </div>
-          </div>
-        )
-      })}
     </section>
-  )
+  );
 }

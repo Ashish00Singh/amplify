@@ -40,7 +40,7 @@ export default function FooterSection() {
           {/* Brand column */}
           <div>
             <Link href="/" className="flex items-center gap-2">
-          <Image src="/images/AmplifyNewLogo.svg" alt="Logo" width={120} height={40} />
+          <Image src="/images/AmplifyNewLogo.svg" className="brightness-600" alt="Logo" width={120} height={40} />
         </Link>
             <p className="mt-3 max-w-xs text-sm text-white/80">
               Enterprise tech delivery for agencies and brands.
